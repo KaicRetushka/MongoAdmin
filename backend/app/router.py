@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Depends
 
 from app.pydantic_schemas import AuthSchema
 from database.requests import insert_user, check_user
@@ -23,3 +23,7 @@ async def post_vhod(body: AuthSchema, response: Response):
         response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
         return {"access_token": token}
     raise HTTPException(status_code=404, detail="Неверный логин или пароль")
+
+@router.get("/authorization", dependencies=[Depends(security.access_token_required)])
+async def authorization():
+    return True
