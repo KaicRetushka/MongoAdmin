@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Response, Depends, Request
 
-from app.pydantic_schemas import AuthSchema
-from database.requests import insert_user, check_user
+from app.pydantic_schemas import AuthSchema, ServerSchema
+from database.requests import insert_user, check_user, insert_server, select_servers
+from database.requests_mongodb import select_dbs
 from app.jwt_settings import security, config
 
 router = APIRouter()
@@ -31,17 +32,28 @@ async def post_vhod(body: AuthSchema, response: Response):
         return {"access_token": token}
     raise HTTPException(status_code=404, detail="Неверный логин или пароль")
 
-@router.get("/token")
-async def test_token(response: Response):
-    response.set_cookie(
-        key="test_token",
-        value="test",
-        httponly=True,
-        samesite='lax',
-        secure=False
-    )
-    return {"detail": "token"}
-
 @router.get("/authorization", dependencies=[Depends(security.access_token_required)])
 async def get_auth():
     return True
+
+@router.post("/servers", dependencies=[Depends(security.access_token_required)])
+async def post_server(body: ServerSchema, request: Request):
+    token = request.cookies[config.JWT_ACCESS_COOKIE_NAME]
+    user_id = security._decode_token(token).sub
+    await insert_server(user_id, body.url)
+    return {"detail": "Сервер добавлен"}
+
+@router.get("/servers", dependencies=[Depends(security.access_token_required)])
+async def get_servers(request: Request):
+    token = request.cookies[config.JWT_ACCESS_COOKIE_NAME]
+    user_id = security._decode_token(token).sub
+    servers = await select_servers(user_id)
+    return servers
+
+@router.get("/dbs/", dependencies=[Depends(security.access_token_required)])
+async  def get_dbs(url: str):
+    dbs = select_dbs(url)
+    if dbs:
+        return dbs
+    raise HTTPException(status_code=404, detail="Невозможно подключиться к серверу")
+    

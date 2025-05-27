@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
-import { InputTextAuth } from "./InputTextAuth.jsx"
+import { InputText } from "./InputText.jsx"
 import { InputPWDAuth } from "./InputPWDAuth"
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { Toast } from "./Toast.jsx"
 
 export function Vhod(){
@@ -11,15 +11,6 @@ export function Vhod(){
 
     const loginRef = useRef()
     const pwdRef = useRef()
-
-    useEffect(() => {
-        async function fetchData() {
-            let response = await fetch("http://localhost:8001/token", {method: "GET", headers: {"content-type": "application/json"}, credentials: "include"})
-            response = await response.json()
-            console.log(response.detail)
-        }
-        fetchData()
-    }, [])
 
     async function funVhod(){
         if (!loginRef.current.value || !pwdRef.current.value){
@@ -52,10 +43,10 @@ export function Vhod(){
     }
 
     return(
-        <div className="bg-[#001e2b] h-screen flex items-center justify-center">
+        <div className="h-screen flex items-center justify-center">
             <div className="bg-[#02694c] flex flex-col p-7 rounded-3xl gap-12">
                 <h1 className="font-bold text-5xl text-[#84d540]">Вход</h1>
-                <InputTextAuth input_ref={loginRef} placeholder="Введите логин"/>
+                <InputText input_ref={loginRef} placeholder="Введите логин"/>
                 <InputPWDAuth input_ref={pwdRef} placeholder="Введите пароль"/>
                 <div className="flex flex-col items-center">
                     <button className="bg-[#84d540] text-3xl text-white font-bold rounded-2xl py-3 hover:bg-[#6bb030] cursor-pointer w-full" onClick={funVhod}>Войти</button>

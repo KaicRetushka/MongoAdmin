@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import { InputTextAuth } from "./InputTextAuth.jsx"
+import { InputText } from "./InputText.jsx"
 import { InputPWDAuth } from "./InputPWDAuth"
 import { useRef, useState } from "react"
 import { Toast } from "./Toast.jsx"
@@ -44,11 +44,10 @@ export function Reg(){
         }
     }
     return (
-        <div className="bg-[#001e2b] h-screen flex items-center justify-center">
-            <input type="text" name="" ref={inputName} />
+        <div className="h-screen flex items-center justify-center">
             <div className="bg-[#02694c] flex flex-col p-7 rounded-3xl gap-12">
                 <h1 className="font-bold text-5xl text-[#84d540]">Регистрация</h1>
-                <InputTextAuth input_ref={loginRef} placeholder="Введите логин"/>
+                <InputText input_ref={loginRef} placeholder="Введите логин"/>
                 <InputPWDAuth input_ref={pwdRef} placeholder="Введите пароль"/>
                 <InputPWDAuth input_ref={pwdRef2} placeholder="Повторите пароль"/>
                 <div className="flex flex-col items-center">
