@@ -25,8 +25,8 @@ async def post_vhod(body: AuthSchema, response: Response):
             key=config.JWT_ACCESS_COOKIE_NAME,
             value=token,
             httponly=True,
-            samesite='none',
-            secure=True
+            samesite='lax',
+            secure=False
         )
         return {"access_token": token}
     raise HTTPException(status_code=404, detail="Неверный логин или пароль")
@@ -37,12 +37,11 @@ async def test_token(response: Response):
         key="test_token",
         value="test",
         httponly=True,
-        samesite='none',
-        secure=True
+        samesite='lax',
+        secure=False
     )
     return {"detail": "token"}
 
-@router.get("/authorization")
-async def get_auth(request: Request):
-    print(request.cookies)  # видите ли вы куки здесь?
-    return {"cookies": request.cookies}
+@router.get("/authorization", dependencies=[Depends(security.access_token_required)])
+async def get_auth():
+    return True

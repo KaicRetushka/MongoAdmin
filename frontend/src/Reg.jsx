@@ -3,7 +3,7 @@ import { InputTextAuth } from "./InputTextAuth.jsx"
 import { InputPWDAuth } from "./InputPWDAuth"
 import { useRef, useState } from "react"
 import { Toast } from "./Toast.jsx"
-import { useEffect } from "react"
+
 
 export function Reg(){
     const loginRef = useRef()
@@ -26,7 +26,7 @@ export function Reg(){
             }
         }
         else {
-            let response = await fetch("http://127.0.0.1:8000/reg", {
+            let response = await fetch("http://localhost:8001/reg", {
                 method: "POST",
                 body: JSON.stringify({
                     login: loginRef.current.value,
@@ -43,9 +43,9 @@ export function Reg(){
             }
         }
     }
-
     return (
         <div className="bg-[#001e2b] h-screen flex items-center justify-center">
+            <input type="text" name="" ref={inputName} />
             <div className="bg-[#02694c] flex flex-col p-7 rounded-3xl gap-12">
                 <h1 className="font-bold text-5xl text-[#84d540]">Регистрация</h1>
                 <InputTextAuth input_ref={loginRef} placeholder="Введите логин"/>

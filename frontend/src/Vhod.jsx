@@ -14,7 +14,7 @@ export function Vhod(){
 
     useEffect(() => {
         async function fetchData() {
-            let response = await fetch("http://127.0.0.1:8000/token", {method: "GET", headers: {"content-type": "application/json"}, credentials: "include"})
+            let response = await fetch("http://localhost:8001/token", {method: "GET", headers: {"content-type": "application/json"}, credentials: "include"})
             response = await response.json()
             console.log(response.detail)
         }
@@ -32,7 +32,7 @@ export function Vhod(){
             }
         }
         else {
-            let response = await fetch("http://127.0.0.1:8000/vhod", {
+            let response = await fetch("http://localhost:8001/vhod", {
                 method: "POST",
                 body: JSON.stringify({
                     login: loginRef.current.value,

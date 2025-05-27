@@ -6,19 +6,14 @@ export function App() {
 
   useEffect(() => {
     async function fetchData(){
-// Сначала установите cookie
-    // await fetch("http://127.0.0.1:8000/token", {
-    //     method: "GET", 
-    //     credentials: "include"
-    // });
-    
-    // Затем получите их
-    let response = await fetch("http://127.0.0.1:8000/authorization", {
-        method: "GET", 
-        credentials: "include"
-    });
-    response = await response.json();
-    console.log(response);
+      let response = await fetch("http://localhost:8001/authorization", {
+          method: "GET", 
+          credentials: "include"
+      });
+      if (!response.ok){
+        navigate("/reg")
+      }
+
     }
     fetchData()
   }, [])
